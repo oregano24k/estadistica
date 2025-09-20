@@ -1,10 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import { Header } from './components/Header';
-import { ImageUploader } from './components/ImageUploader';
 import { ResultDisplay, ExtractionResult } from './components/ResultDisplay';
 import { extractTextFromImage } from './services/geminiService';
-import { ConvertIcon } from './components/IconComponents';
 import { Login } from './components/Login';
+import { Configuration } from './components/Configuration';
 
 // Persiste el estado a través de los inicios de sesión en esta sesión para permitir que el usuario 'yo' vea la carga del admin.
 let sharedExtractionResult: ExtractionResult | null = null;
@@ -104,34 +103,15 @@ const App: React.FC = () => {
         <Header username={currentUser} onLogout={handleLogout} />
         <main className="mt-8">
           {currentUser === 'admin' ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="flex flex-col space-y-6">
-                <ImageUploader onImageUpload={handleImageUpload} imageUrl={imageUrl} />
-                <div className="flex items-center justify-between gap-4">
-                     <button
-                        onClick={handleConvert}
-                        disabled={!imageFile || isLoading}
-                        className="w-full flex items-center justify-center gap-3 bg-indigo-600 hover:bg-indigo-500 disabled:bg-indigo-900 disabled:text-slate-400 disabled:cursor-not-allowed text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg shadow-indigo-600/30 focus:outline-none focus:ring-4 focus:ring-indigo-400 focus:ring-opacity-50"
-                      >
-                        {isLoading ? (
-                          'Procesando...'
-                        ) : (
-                         <>
-                            <ConvertIcon />
-                            Convertir Imagen a Texto
-                         </>
-                        )}
-                    </button>
-                     {imageUrl && (
-                         <button 
-                            onClick={handleClear}
-                            className="bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-6 rounded-lg transition-colors duration-300"
-                            >
-                            Limpiar
-                        </button>
-                     )}
-                </div>
-              </div>
+            <div className="flex flex-col gap-8">
+                <Configuration
+                    onImageUpload={handleImageUpload}
+                    imageUrl={imageUrl}
+                    onConvert={handleConvert}
+                    onClear={handleClear}
+                    isLoading={isLoading}
+                    imageFile={imageFile}
+                />
               <ResultDisplay result={extractionResult} isLoading={isLoading} error={error} userRole={currentUser} />
             </div>
           ) : ( // Cuando currentUser es 'yo'
