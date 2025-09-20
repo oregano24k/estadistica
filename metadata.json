@@ -1,0 +1,5 @@
+{
+  "name": "Gemini OCR - Extractor de Texto",
+  "description": "Una aplicación web para extraer texto de imágenes usando la API de Gemini. Sube una imagen para realizar OCR y obtener texto editable.",
+  "requestFramePermissions": []
+}
